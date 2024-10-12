@@ -1,0 +1,17 @@
+import pygame
+
+WIDTH, HEIGHT = 800, 800 #max screen size
+
+ROWS, COLS = 9, 9
+SQUARE_SIZE = 50#BOARD//COLS
+S_ROW, S_COL = 8, 8
+SPACE_SIZE = 15
+
+ORANGE = (255, 153, 51)
+BROWN = (153, 76, 0)
+BLACK = (0,0,0)
+WHITE = (255,255,255)
+GREY = (128,128,128)
+
+
+
