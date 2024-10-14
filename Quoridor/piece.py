@@ -1,5 +1,6 @@
-from .constants import BLACK, WHITE, GREY, SQUARE_SIZE, SPACE_SIZE, WIDTH, HEIGHT
+from .constants import BLACK, WHITE, GREY, SQUARE_SIZE, SPACE_SIZE, WIDTH, HEIGHT, ROWS, COLS
 import pygame
+
 class Piece:
 
     PADDING = 10
@@ -31,7 +32,7 @@ class Piece:
         radius = SQUARE_SIZE//2 - self.PADDING
         pygame.draw.circle(win, GREY, (self.x, self.y), radius + self.OUTLINE)
         pygame.draw.circle(win, self.color, (self.x, self.y), radius)
-        
+
 
     def __repr__(self):
         return str(self.color)
