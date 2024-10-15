@@ -11,8 +11,10 @@ class Piece:
         self.color = color
         if self.color == BLACK:
             self.direction = -1
+            self.player_one = False
         if self.color == WHITE:
             self.direction = 1
+            self.player_one = True
 
         self.x = 0
         self.y = 0
