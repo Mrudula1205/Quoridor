@@ -8,11 +8,11 @@ from .piece import Piece
 from .wall import Wall, is_valid_wall
 
 class Board:
-    def __init__(self):
+    def __init__(self, player_row, player_col, ai_row, ai_col):
         self.board = []
         self.walls = []
         self.selected_piece = None
-        self.create_board(8,4,0,4)
+        self.create_board(player_row, player_col, ai_row, ai_col)
         #self.white_left = self.black_left = 1 ==> might have to remove this as there will always be 2 moving pieces on the board
     
     def draw_squares(self, win):
@@ -60,17 +60,17 @@ class Board:
 
                     
 
-
-
     def create_board(self, player_row, player_col, ai_row, ai_col):
         for row in range (ROWS):
             self.board.append([])
             for col in range (COLS):
                 if col==player_col and row==player_row:
-                    self.board[row].append(Piece(row, col, WHITE))
+                    player = Piece(row, col, WHITE)
+                    self.board[row].append(player)
                     
                 elif col==ai_col and row==ai_row:
-                    self.board[row].append(Piece(row, col, BLACK))
+                    ai = Piece(row, col, BLACK)
+                    self.board[row].append(ai)
                 else:
                     self.board[row].append(0)
 
