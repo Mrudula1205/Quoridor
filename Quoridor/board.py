@@ -6,13 +6,14 @@ import pygame
 from .constants import BROWN, ROWS, COLS, ORANGE, SQUARE_SIZE, WIDTH, HEIGHT, BLACK, SPACE_SIZE, WHITE, GREY
 from .piece import Piece
 from .wall import Wall, is_valid_wall
+from .piece_status import BoardPieceStatus
 
 class Board:
     def __init__(self, player1_row, player1_col, player2_row, player2_col):
         self.board = []
         self.walls = []
         self.selected_piece = None
-        self.create_board(playe1r_row, player1_col, player2_row, player2_col)
+        self.create_board(player1_row, player1_col, player2_row, player2_col)
         #self.white_left = self.black_left = 1 ==> might have to remove this as there will always be 2 moving pieces on the board
     
     def draw_squares(self, win):
