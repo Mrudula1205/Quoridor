@@ -26,7 +26,7 @@ class Piece:
         rect_y = (HEIGHT-Board_width)//2
         self.x = rect_x+(self.col // 2) * (SQUARE_SIZE + SPACE_SIZE)+SQUARE_SIZE/2
         self.y = rect_y+(self.row // 2) * (SQUARE_SIZE + SPACE_SIZE)+SQUARE_SIZE/2
-        print("hi")
+        
 
     
     def draw(self, win):

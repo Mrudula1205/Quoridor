@@ -108,7 +108,8 @@ class Board:
         return None
     
     def move_piece(self, piece, row, col):
-        if (self.is_wall(piece, row, col) and self.valid_move(piece, row, col) == False):
+        
+        if (self.is_wall(piece, row, col)==True or self.valid_move(piece, row, col) == False):
             print("invalid move")
         else:    
             self.board[piece.row][piece.col] = 0  # Clear the original position
