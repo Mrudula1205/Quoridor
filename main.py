@@ -1,8 +1,8 @@
 import pygame
 from Quoridor.constants import WIDTH, HEIGHT, SQUARE_SIZE, SPACE_SIZE, WHITE, BLACK
 from Quoridor.board import Board
-from  Quoridor.algorithm import ai_move
-#from Quoridor.ai import ai_move
+#from  Quoridor.algorithm import ai_move
+
 FPS = 60
 WIN = pygame.display.set_mode(( WIDTH, HEIGHT ))
 
@@ -58,11 +58,11 @@ def main():
                                 board.add_wall(row, col, 'horizontal')
                                 board.player1_wall -= 1
                                 print("hor", board.player1_wall)
-                                current_player = BLACK
-                            elif current_player == BLACK and board.ai_walls >= 0:
+                                #current_player = BLACK
+                            '''elif current_player == BLACK and board.player2_wall >= 0:
                                 board.add_wall(row, col, 'horizontal')
                                 board.player2_wall -= 1
-                                current_player = WHITE
+                                current_player = WHITE'''
                     elif event.button == 3:  # Right click for vertical
                         if row % 2 == 0 and col % 2 == 1:  # Ensure it's a valid vertical space
                             if current_player == WHITE and board.player1_wall >= 0:
@@ -70,17 +70,17 @@ def main():
                                 board.add_wall(row, col, 'vertical')
                                 board.player1_wall -= 1
                                 print("ver", board.player1_wall)
-                                current_player = BLACK
-                            elif current_player == BLACK and board.player2_wall >= 0:
+                                #current_player = BLACK
+                            '''elif current_player == BLACK and board.player2_wall >= 0:
                                 board.add_wall(row, col, 'vertical')
                                 board.player2_wall -= 1
-                                current_player = WHITE
+                                current_player = WHITE'''
                 elif mode == 'move':
                     if selected_piece: 
                         if board.valid_move(selected_piece, row, col):
                             board.move_piece(selected_piece, row, col)
                             selected_piece = None
-                            current_player = BLACK
+                            #current_player = BLACK
                     else:
                         selected_piece = board.get_piece(row, col)
                     print('piece selected', selected_piece)
@@ -99,11 +99,11 @@ def main():
                 
                 if board.valid_move(selected_piece, new_row, new_col):
                     board.move_piece(selected_piece, new_row, new_col)
-                    current_player = BLACK
+                    #current_player = BLACK
 
-        if current_player == BLACK:
+        '''if current_player == BLACK:
             ai_move(board)
-            current_player = WHITE
+            current_player = WHITE'''
                 
         
         board.draw(WIN)
