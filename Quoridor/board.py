@@ -6,16 +6,17 @@ import pygame
 from .constants import BROWN, ROWS, COLS, ORANGE, SQUARE_SIZE, WIDTH, HEIGHT, BLACK, SPACE_SIZE, WHITE, GREY
 from .piece import Piece
 from .wall import Wall, is_valid_wall
+from .piece_status import BoardPieceStatus
 
 
 class Board:
-    def __init__(self, player_row, player_col, ai_row, ai_col):
+    def __init__(self, player1_row, player1_col, player2_row, player2_col):
         self.board = []
         self.walls = []
         self.selected_piece = None
         self.player1_wall = 10
         self.player2_wall = 10
-        self.create_board(player_row, player_col, ai_row, ai_col)
+        self.create_board(player1_row, player1_col, player2_row, player2_col)
         #self.white_left = self.black_left = 1 ==> might have to remove this as there will always be 2 moving pieces on the board
     
     def draw_squares(self, win):
@@ -61,21 +62,28 @@ class Board:
 
     
 
-    def create_board(self, player_row, player_col, ai_row, ai_col):
+    def create_board(self, player1_row, player1_col, player2_row, player2_col):
         for row in range (ROWS):
             self.board.append([])
             for col in range (COLS):
-                if col==player_col and row==player_row:
+                if col==player1_col and row==player1_row:
                     player = Piece(row, col, WHITE)
                     self.board[row].append(player)
                     
-                elif col==ai_col and row==ai_row:
+                elif col==player2_col and row==player2_row:
                     ai = Piece(row, col, BLACK)
                     self.board[row].append(ai)
                 else:
                     self.board[row].append(0)
 
-
+    def get_piece(self, color):
+        for row in range(ROWS):
+            for col in range(COLS):
+                piece = self.board[row][col]
+                if piece != 0 and piece.color == color:
+                    return piece
+        return None
+    
     def draw(self, win):
         self.draw_squares(win)
         for row in range (ROWS):

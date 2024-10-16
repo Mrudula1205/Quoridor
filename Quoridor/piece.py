@@ -13,6 +13,7 @@ class Piece:
             self.direction = -1
         if self.color == WHITE: #AI - player2
             self.direction = 1
+            
 
         self.x = 0
         self.y = 0
