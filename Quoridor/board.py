@@ -108,7 +108,7 @@ class Board:
         return None
     
     def move_piece(self, piece, row, col):
-        if (self.is_wall(piece, row, col)):
+        if (self.is_wall(piece, row, col) and self.valid_move(piece, row, col) == False):
             print("invalid move")
         else:    
             self.board[piece.row][piece.col] = 0  # Clear the original position
@@ -128,90 +128,7 @@ class Board:
             if (wall_row, wall_col) in wall.affected_positions():
                 return True
         return False
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ''' 
-    def evaluate(board):
-        score = 0
-
-        # Distance to Goal
-        for row in board.board:
-            for piece in row:
-                if piece != 0:
-                    if piece.color == WHITE:  # AI
-                        score += (ROWS - piece.row)  # Closer to goal, higher score
-                    elif piece.color == BLACK:  # Human player
-                        score -= piece.row
-        
-        score += board.player_walls * 10  
-        score -= board.ai_walls * 10
-
-        for row in board.board:
-            for piece in row:
-                if piece != 0:
-                    if piece.color == WHITE:  # AI
-                        score += len(get_valid_moves(board, piece))  # More moves, higher score
-                    elif piece.color == BLACK:  # Human player
-                        score -= len(get_valid_moves(board, piece)) 
-        return score
     
-    def undo_move(self, move, original_row=None, original_col=None):
-        if move[0] == 'place_wall':
-            self.remove_wall(move[1], move[2], move[3])
-        else:
-            piece, new_row, new_col = move
-            if original_row is not None and original_col is not None:
-                piece.row, piece.col = original_row, original_col
-            else:
-                piece.row, piece.col = new_row, new_col  # Set back to original positions if provided
-            self.board[piece.row][piece.col] = 0  # Clear the moved position
-            self.board[piece.row][piece.col] = piece  # Restore the piece to its original position
-            piece.calc_path()
-
-    def remove_wall(self, row, col, orientation):
-        for wall in self.walls:
-            if wall.row == row and wall.col == col and wall.orientation == orientation:
-                self.walls.remove(wall)
-                break
-
     def make_move(self, move):
         if move[0] == 'place_wall':
             self.add_wall(move[1], move[2], move[3])
@@ -220,6 +137,19 @@ class Board:
             self.board[piece.row][piece.col] = 0  # Clear the original position
             piece.row, piece.col = new_row, new_col
             self.board[new_row][new_col] = piece  # Place the piece at the new position
+            piece.calc_path()
+
+    def undo_move(self, move, original_row=None, original_col=None):
+        if move[0] == 'place_wall':
+            self.remove_wall(move[1], move[2], move[3])
+        else:
+            piece, new_row, new_col = move
+            if original_row is not None and original_col is not None:
+                piece.row, piece.col = original_row, original_col
+            else:
+                piece.row, piece.col = new_row, new_col
+            self.board[piece.row][piece.col] = 0  # Clear the moved position
+            self.board[original_row][original_col] = piece  # Restore the piece to its original position
             piece.calc_path()
 
     def valid_wall_placement(self, row, col, orientation):
@@ -236,4 +166,10 @@ class Board:
                     if wall.col == col and (wall.row == row or wall.row == row + 1):
                         return False
                 return True
-        return False'''
+        return False
+    
+    def remove_wall(self, row, col, orientation):
+        for wall in self.walls:
+            if wall.row == row and wall.col == col and wall.orientation == orientation:
+                self.walls.remove(wall)
+                break
