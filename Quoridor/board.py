@@ -7,11 +7,14 @@ from .constants import BROWN, ROWS, COLS, ORANGE, SQUARE_SIZE, WIDTH, HEIGHT, BL
 from .piece import Piece
 from .wall import Wall, is_valid_wall
 
+
 class Board:
     def __init__(self, player_row, player_col, ai_row, ai_col):
         self.board = []
         self.walls = []
         self.selected_piece = None
+        self.player1_wall = 10
+        self.player2_wall = 10
         self.create_board(player_row, player_col, ai_row, ai_col)
         #self.white_left = self.black_left = 1 ==> might have to remove this as there will always be 2 moving pieces on the board
     
@@ -58,8 +61,6 @@ class Board:
 
     
 
-                    
-
     def create_board(self, player_row, player_col, ai_row, ai_col):
         for row in range (ROWS):
             self.board.append([])
@@ -93,14 +94,138 @@ class Board:
             print("Invalid wall placement.")
             return False
         
-    '''def valid_move():
-        pass
+    def get_piece(self, row, col):
+        if 0<= row < ROWS and 0<= col < COLS:
+            return self.board[row][col]
+        return None
+    
+    def move_piece(self, piece, row, col):
+        if (self.is_wall(piece, row, col)):
+            print("invalid move")
+        else:    
+            self.board[piece.row][piece.col] = 0  # Clear the original position
+            piece.row, piece.col = row, col
+            self.board[row][col] = piece  # Place the piece at the new position
+            piece.calc_path() 
+        
 
-    def move_piece():
-        pass
+    def valid_move(self, piece, row, col):
+        return 0 <= row < ROWS and 0 <= col < COLS and self.board[row][col] == 0
+    
+    def is_wall(self,piece, row, col):
+        
+        wall_row = (piece.row+row)//2
+        wall_col = (piece.col+col)//2
+        for wall in self.walls:
+            if (wall_row, wall_col) in wall.affected_positions():
+                return True
+        return False
+        
 
-    def get_piece(self):
-        for row in range (ROWS):
-            for col in range (COLS):
-                if self.board[row][col] == WHITE:
-                    return row, col'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ''' 
+    def evaluate(board):
+        score = 0
+
+        # Distance to Goal
+        for row in board.board:
+            for piece in row:
+                if piece != 0:
+                    if piece.color == WHITE:  # AI
+                        score += (ROWS - piece.row)  # Closer to goal, higher score
+                    elif piece.color == BLACK:  # Human player
+                        score -= piece.row
+        
+        score += board.player_walls * 10  
+        score -= board.ai_walls * 10
+
+        for row in board.board:
+            for piece in row:
+                if piece != 0:
+                    if piece.color == WHITE:  # AI
+                        score += len(get_valid_moves(board, piece))  # More moves, higher score
+                    elif piece.color == BLACK:  # Human player
+                        score -= len(get_valid_moves(board, piece)) 
+        return score
+    
+    def undo_move(self, move, original_row=None, original_col=None):
+        if move[0] == 'place_wall':
+            self.remove_wall(move[1], move[2], move[3])
+        else:
+            piece, new_row, new_col = move
+            if original_row is not None and original_col is not None:
+                piece.row, piece.col = original_row, original_col
+            else:
+                piece.row, piece.col = new_row, new_col  # Set back to original positions if provided
+            self.board[piece.row][piece.col] = 0  # Clear the moved position
+            self.board[piece.row][piece.col] = piece  # Restore the piece to its original position
+            piece.calc_path()
+
+    def remove_wall(self, row, col, orientation):
+        for wall in self.walls:
+            if wall.row == row and wall.col == col and wall.orientation == orientation:
+                self.walls.remove(wall)
+                break
+
+    def make_move(self, move):
+        if move[0] == 'place_wall':
+            self.add_wall(move[1], move[2], move[3])
+        else:
+            piece, new_row, new_col = move
+            self.board[piece.row][piece.col] = 0  # Clear the original position
+            piece.row, piece.col = new_row, new_col
+            self.board[new_row][new_col] = piece  # Place the piece at the new position
+            piece.calc_path()
+
+    def valid_wall_placement(self, row, col, orientation):
+        # Ensure the wall placement is within bounds and doesn't overlap with existing walls
+        if orientation == 'horizontal':
+            if row % 2 == 1 and col % 2 == 0:
+                for wall in self.walls:
+                    if wall.row == row and (wall.col == col or wall.col == col + 1):
+                        return False
+                return True
+        elif orientation == 'vertical':
+            if row % 2 == 0 and col % 2 == 1:
+                for wall in self.walls:
+                    if wall.col == col and (wall.row == row or wall.row == row + 1):
+                        return False
+                return True
+        return False'''
