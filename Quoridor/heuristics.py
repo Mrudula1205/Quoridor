@@ -8,7 +8,7 @@ def evaluate(board):
         for piece in row:
             if piece != 0:
                 if piece.color == WHITE:  # AI
-                    score += (ROWS - piece.row)
+                    score += 2*(ROWS - piece.row)
                 elif piece.color == BLACK:  # Human player
                     score -= piece.row
 
@@ -19,17 +19,17 @@ def evaluate(board):
                 piece = board.board[row][col]
                 if board.is_wall(piece, piece.row - 2, piece.col):  # Example check for walls
                     if piece.color == WHITE:
-                        score -= 5  # Penalize if a wall is blocking the AI
+                        score -= 1  # Penalize if a wall is blocking the AI
                     elif piece.color == BLACK:
-                        score += 5  # Penalize if a wall is blocking the human player
+                        score += 1  # Penalize if a wall is blocking the human player'''
     # Piece Mobility
     for row in board.board:
         for piece in row:
             if piece != 0:
                 if piece.color == WHITE:  # AI
-                    score += len(get_valid_moves(board, piece))
+                    score += len(get_valid_moves(board, piece))+5
                 elif piece.color == BLACK:  # Human player
-                    score -= len(get_valid_moves(board, piece))
+                    score -= len(get_valid_moves(board, piece))+5
 
     return score
 
