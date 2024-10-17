@@ -14,8 +14,9 @@ class Board:
         self.board = []
         self.walls = []
         self.selected_piece = None
-        self.player1_wall = 10
-        self.player2_wall = 10
+        self.player1_wall = 5
+        self.player2_wall = 5
+        #self.current_player = None
         self.create_board(player1_row, player1_col, player2_row, player2_col)
         #self.white_left = self.black_left = 1 ==> might have to remove this as there will always be 2 moving pieces on the board
     
@@ -93,9 +94,14 @@ class Board:
                     piece.draw(win)
     
     def add_wall(self, row, col, orientation):
+        print("in add_wall")
         wall = Wall(row, col, orientation)
         if is_valid_wall(self, wall):
             self.walls.append(wall)
+            '''if self.current_player == BLACK:
+                self.player2_wall -= 1
+            elif self.current_player == WHITE:
+                self.player1_wall -= 1'''
             print(f"Wall placed at ({row}, {col}) in {orientation} orientation.")
             return True
         else:
@@ -109,13 +115,16 @@ class Board:
     
     def move_piece(self, piece, row, col):
         
-        if (self.is_wall(piece, row, col)==True or self.valid_move(piece, row, col) == False):
-            print("invalid move")
-        else:    
+        if (self.is_wall(piece, row, col)==False or self.valid_move(piece, row, col) == True):
             self.board[piece.row][piece.col] = 0  # Clear the original position
             piece.row, piece.col = row, col
             self.board[row][col] = piece  # Place the piece at the new position
+            print("is in move piece")
             piece.calc_path() 
+            
+        else:   
+            print("invalid move") 
+            
         
 
     def valid_move(self, piece, row, col):
@@ -130,10 +139,32 @@ class Board:
                 return True
         return False
     
+    def valid_wall_placement(self, row, col, orientation):
+        print('yet another function')
+        # Ensure the wall placement is within bounds and doesn't overlap with existing walls
+        if orientation == 'horizontal':
+            if row % 2 == 1 and col % 2 == 0:
+                for wall in self.walls:
+                    if wall.row == row and (wall.col == col or wall.col == col + 1):
+                        return False
+                return True
+        elif orientation == 'vertical':
+            if row % 2 == 0 and col % 2 == 1:
+                for wall in self.walls:
+                    if wall.col == col and (wall.row == row or wall.row == row + 1):
+                        return False
+                return True
+        return False
+
+
     def make_move(self, move):
         if move[0] == 'place_wall':
-            self.add_wall(move[1], move[2], move[3])
+            print('Im infunc')
+            if self.valid_wall_placement(move[1], move[2], move[3]):
+                print('Im valid')
+                self.add_wall(move[1], move[2], move[3])
         else:
+            print('Im not wall')
             piece, new_row, new_col = move
             self.board[piece.row][piece.col] = 0  # Clear the original position
             piece.row, piece.col = new_row, new_col
@@ -153,24 +184,16 @@ class Board:
             self.board[original_row][original_col] = piece  # Restore the piece to its original position
             piece.calc_path()
 
-    def valid_wall_placement(self, row, col, orientation):
-        # Ensure the wall placement is within bounds and doesn't overlap with existing walls
-        if orientation == 'horizontal':
-            if row % 2 == 1 and col % 2 == 0:
-                for wall in self.walls:
-                    if wall.row == row and (wall.col == col or wall.col == col + 1):
-                        return False
-                return True
-        elif orientation == 'vertical':
-            if row % 2 == 0 and col % 2 == 1:
-                for wall in self.walls:
-                    if wall.col == col and (wall.row == row or wall.row == row + 1):
-                        return False
-                return True
-        return False
+    
     
     def remove_wall(self, row, col, orientation):
         for wall in self.walls:
             if wall.row == row and wall.col == col and wall.orientation == orientation:
                 self.walls.remove(wall)
                 break
+
+   
+
+
+
+  
