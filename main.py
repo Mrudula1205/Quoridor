@@ -54,28 +54,28 @@ def main():
                 if mode == 'wall':
                     if event.button == 1:  # Left click for horizontal
                         if row % 2 == 1 and col % 2 == 0:  # Ensure it's a valid horizontal space
-                            if board.current_player == WHITE and board.player1_wall > 1:
+                            if current_player == WHITE and board.player1_wall > 1:
                                 board.add_wall(row, col, 'horizontal')
                                 board.player1_wall -= 1
                                 current_player = BLACK
                                 print("hor", board.player1_wall)
                                 print("Turn switched to BLACK (AI)")
                         
-                            elif board.current_player == BLACK and board.player2_wall > 1:
+                            elif current_player == BLACK and board.player2_wall > 1:
                                 board.add_wall(row, col, 'horizontal')
                                 board.player2_wall -= 1
                                 current_player = WHITE
                                 print("Turn switched to WHITE (Human)")
                     elif event.button == 3:  # Right click for vertical
                         if row % 2 == 0 and col % 2 == 1:  # Ensure it's a valid vertical space
-                            if board.current_player == WHITE and board.player1_wall > 1:
+                            if current_player == WHITE and board.player1_wall > 1:
                                 print(row, col, "vertical")
                                 board.add_wall(row, col, 'vertical')
                                 board.player1_wall -= 1
                                 print("ver", board.player1_wall)
                                 print("Turn switched to BLACK (AI)")
                                 board.current_player = BLACK
-                            elif board.current_player == BLACK and board.player2_wall > 1:
+                            elif current_player == BLACK and board.player2_wall > 1:
                                 board.add_wall(row, col, 'vertical')
                                 board.player2_wall -= 1
                                 current_player = WHITE
