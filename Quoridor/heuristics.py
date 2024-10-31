@@ -11,9 +11,9 @@ def evaluate(board):
         for piece in row:
             if piece != 0:
                 if piece.color == WHITE:  # AI
-                    score -= (ROWS - piece.row)
+                    score += (ROWS - piece.row)
                 elif piece.color == BLACK:  # Human player
-                    score += (piece.row)
+                    score -= (piece.row)
 
     # Wall Obstruction (penalize based on walls blocking direct paths)
     for row in range(ROWS):
