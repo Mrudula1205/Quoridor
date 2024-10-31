@@ -13,7 +13,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
         max_eval = float('-inf')
         best_move = None
         for move in get_all_moves(board, BLACK):
-            piece, new_row, new_col = move
+            piece, new_row, new_col= move
             original_row, original_col = piece.row, piece.col
             board.make_move(move)
             evaluation = minimax(board, depth - 1, alpha, beta, False)[0]
@@ -126,7 +126,11 @@ def ai_move(board):
         print(f"AI Move: {best_move}")
         if best_move[0] == 'place_wall':
             if board.player2_wall >= 0:
+                print("player2_wall", board.player2_wall)
                 print("AI adding_wall")
+                board.player2_wall -=1
                 board.add_wall(best_move[1], best_move[2], best_move[3])
+            else: 
+                ai_move(board)
         else:
             board.move_piece(best_move[0], best_move[1], best_move[2])
