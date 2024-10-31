@@ -98,10 +98,12 @@ class Board:
         wall = Wall(row, col, orientation)
         if is_valid_wall(self, wall):
             self.walls.append(wall)
-            '''if self.current_player == BLACK:
+            '''if color == BLACK:
                 self.player2_wall -= 1
-            elif self.current_player == WHITE:
-                self.player1_wall -= 1'''
+                print("player2_wall", self.player2_wall)
+            elif color == WHITE:
+                self.player1_wall -= 1
+                print("player1_wall", self.player1_wall)'''
             print(f"Wall placed at ({row}, {col}) in {orientation} orientation.")
             return True
         else:
@@ -128,7 +130,7 @@ class Board:
         
 
     def valid_move(self, piece, row, col):
-        return 0 <= row < ROWS and 0 <= col < COLS and self.board[row][col] == 0
+        return 0 <= row < ROWS and 0 <= col < COLS and self.board[row][col] == 0 
     
     def is_wall(self,piece, row, col):
         
@@ -136,6 +138,7 @@ class Board:
         wall_col = (piece.col+col)//2
         for wall in self.walls:
             if (wall_row, wall_col) in wall.affected_positions():
+                
                 return True
         return False
     
@@ -191,9 +194,3 @@ class Board:
             if wall.row == row and wall.col == col and wall.orientation == orientation:
                 self.walls.remove(wall)
                 break
-
-   
-
-
-
-  
