@@ -2,9 +2,13 @@ import pygame
 from Quoridor.constants import WIDTH, HEIGHT, SQUARE_SIZE, SPACE_SIZE, WHITE, BLACK
 from Quoridor.board import Board
 from  Quoridor.algorithm import ai_move
+from Quoridor.heuristics import game_over
 
 FPS = 60
 WIN = pygame.display.set_mode(( WIDTH, HEIGHT ))
+pygame.init()
+pygame.font.init() 
+
 
 Board_width = (SQUARE_SIZE*9 + SPACE_SIZE*8)
 rect_x = (WIDTH-Board_width)//2
@@ -54,32 +58,42 @@ def main():
                 if mode == 'wall':
                     if event.button == 1:  # Left click for horizontal
                         if row % 2 == 1 and col % 2 == 0:  # Ensure it's a valid horizontal space
-                            if board.current_player == WHITE and board.player1_wall > 1:
-                                board.add_wall(row, col, 'horizontal')
+                            if current_player == WHITE and board.player1_wall > 1:
                                 board.player1_wall -= 1
-                                current_player = BLACK
+                                print("player1_wall", board.player1_wall)
+                                board.add_wall(row, col, 'horizontal')
+                                
+                                
                                 print("hor", board.player1_wall)
                                 print("Turn switched to BLACK (AI)")
+                                current_player = BLACK
                         
-                            elif board.current_player == BLACK and board.player2_wall > 1:
-                                board.add_wall(row, col, 'horizontal')
+                            elif current_player == BLACK and board.player2_wall > 1:
                                 board.player2_wall -= 1
-                                current_player = WHITE
+                                board.add_wall(row, col, 'horizontal')
+                                
+                                print("player2_wall", board.player2_wall)
                                 print("Turn switched to WHITE (Human)")
+                                current_player = WHITE
                     elif event.button == 3:  # Right click for vertical
                         if row % 2 == 0 and col % 2 == 1:  # Ensure it's a valid vertical space
-                            if board.current_player == WHITE and board.player1_wall > 1:
+                            if current_player == WHITE and board.player1_wall > 1:
                                 print(row, col, "vertical")
-                                board.add_wall(row, col, 'vertical')
+                                print("player1_wall", board.player1_wall)
                                 board.player1_wall -= 1
+                                board.add_wall(row, col, 'vertical')
+                                
                                 print("ver", board.player1_wall)
+                                
                                 print("Turn switched to BLACK (AI)")
                                 board.current_player = BLACK
-                            elif board.current_player == BLACK and board.player2_wall > 1:
-                                board.add_wall(row, col, 'vertical')
+                            elif current_player == BLACK and board.player2_wall > 1:
                                 board.player2_wall -= 1
-                                current_player = WHITE
+                                print("player2_wall", board.player2_wall)
+                                board.add_wall(row, col, 'vertical')
+                                
                                 print("Turn switched to WHITE (Human)")
+                                current_player = WHITE
                 elif mode == 'move':
                     if selected_piece: 
                         if board.valid_move(selected_piece, row, col):
@@ -113,6 +127,9 @@ def main():
         
         board.draw(WIN)
         pygame.display.update()
+        if game_over(board):
+            #print("Game over!")
+            run = False
 
     pygame.quit()
 
