@@ -78,7 +78,6 @@ def main():
                     elif event.button == 3:  # Right click for vertical
                         if row % 2 == 0 and col % 2 == 1:  # Ensure it's a valid vertical space
                             if current_player == WHITE and board.player1_wall > 1:
-                            if current_player == WHITE and board.player1_wall > 1:
                                 print(row, col, "vertical")
                                 print("player1_wall", board.player1_wall)
                                 board.player1_wall -= 1
